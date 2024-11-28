@@ -12,16 +12,28 @@ app.use(express.static('public'));
 //     res.send('Welcome to the Student Management App!');
 // });
 
-// Dummy data for students
+// Array of student objects with id, name, and email
 const students = [
     { id: 1, name: 'John Doe', email: 'john.doe@example.com' },
-    { id: 2, name: 'Jane Smith', email: 'jane.smith@example.com' }
+    { id: 2, name: 'Jane Smith', email: 'jane.smith@example.com' },
+    { id: 3, name: 'Sam Wilson', email: 'sam.wilson@example.com' }
 ];
 
-// Route to handle GET /students
+// Route to get all students
 app.get('/students', (req, res) => {
-    // Respond with the list of students in JSON format
-    res.json(students);
+    res.json(students); // Send the array of students as a JSON response
+});
+
+// Route to get a student by ID
+app.get('/students/:id', (req, res) => {
+    const studentId = parseInt(req.params.id); // Convert the id from the request parameter to an integer
+    const student = students.find(s => s.id === studentId); // Search for the student with the matching id
+
+    if (student) {
+        res.json(student); // Send the matched student data as JSON
+    } else {
+        res.status(404).json({ error: 'Student not found' }); // Send a 404 response if no student is found
+    }
 });
 
 // Route to handle GET /about
